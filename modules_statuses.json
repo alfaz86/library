@@ -1,0 +1,9 @@
+{
+    "Core": true,
+    "Books": true,
+    "Members": true,
+    "Loans": true,
+    "Staffs": true,
+    "Dashboard": true,
+    "Settings": true
+}
