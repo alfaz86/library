@@ -22,6 +22,7 @@ use Modules\Book\Filament\Resources\BookResource;
 use Modules\Core\Filament\Resources\SettingResource;
 use Modules\Core\Models\Setting;
 use FilipFonal\FilamentLogManager\FilamentLogManager;
+use Modules\Loan\Filament\Resources\LoanResource;
 use Modules\Member\Filament\Resources\MemberResource;
 
 class AdminPanelProvider extends PanelProvider
@@ -66,6 +67,7 @@ class AdminPanelProvider extends PanelProvider
                 SettingResource::class,
                 BookResource::class,
                 MemberResource::class,
+                LoanResource::class,
             ])
             ->userMenuItems([
                 MenuItem::make()

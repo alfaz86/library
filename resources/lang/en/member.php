@@ -3,7 +3,7 @@
 return [
     'resources' => [
         'label' => 'Member',
-        'plural_label' => 'Member List',
+        'plural_label' => 'Members',
     ],
     'pages' => [
         'index' => [

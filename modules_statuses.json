@@ -7,5 +7,6 @@
     "Dashboard": true,
     "Settings": true,
     "Book": true,
-    "Member": true
+    "Member": true,
+    "Loan": true
 }
