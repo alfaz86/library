@@ -8,8 +8,6 @@ class Setting extends Model
 {
     protected $fillable = ['key', 'value'];
 
-    public $timestamps = false;
-
     public static function get($key, $default = null)
     {
         return static::query()->where('key', $key)->value('value') ?? $default;
@@ -18,5 +16,15 @@ class Setting extends Model
     public static function set($key, $value)
     {
         return static::updateOrCreate(['key' => $key], ['value' => $value]);
+    }
+
+    public static function getLogoUrl()
+    {
+        $logo = static::get('library_logo');
+        if (filter_var($logo, FILTER_VALIDATE_URL)) {
+            return $logo;
+        }
+
+        return asset('images/' . $logo);
     }
 }

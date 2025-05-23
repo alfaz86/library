@@ -22,13 +22,15 @@ class SettingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static bool $shouldRegisterNavigation = true;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('key')
                     ->required()
-                    ->unique(  fn (?Setting $record) => $record)
+                    ->unique(ignorable: fn ($record) => $record)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('value')
                     ->required()

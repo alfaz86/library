@@ -6,5 +6,6 @@
     "Staffs": true,
     "Dashboard": true,
     "Settings": true,
-    "Book": true
+    "Book": true,
+    "Member": true
 }

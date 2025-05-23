@@ -16,4 +16,9 @@ class EditSetting extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return SettingResource::getUrl('edit', ['record' => $this->record]);
+    }
 }

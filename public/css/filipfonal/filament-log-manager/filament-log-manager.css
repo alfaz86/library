@@ -1,0 +1,28 @@
+.bg-danger {
+    background-color: rgb(185 28 28);
+    zoom: 90%;
+}
+
+.bg-warning {
+    background-color: rgb(251 191 36);
+    zoom: 90%;
+}
+
+.bg-info {
+    background-color: rgb(34 211 238);
+    zoom: 90%;
+}
+
+.no-bottom-radius {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.no-top-radius {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}

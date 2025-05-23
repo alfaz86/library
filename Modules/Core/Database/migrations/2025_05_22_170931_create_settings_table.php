@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->primary();
+            $table->string('key')->unique();
             $table->text('value')->nullable();
             $table->boolean('is_default')->default(true);
             $table->timestamps();
