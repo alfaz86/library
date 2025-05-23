@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Modules\Book\Database\Seeders\BookDatabaseSeeder;
 use Modules\Core\Database\Seeders\CoreDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CoreDatabaseSeeder::class,
+            BookDatabaseSeeder::class,
         ]);
     }
 }

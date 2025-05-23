@@ -17,6 +17,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Modules\Book\Filament\Resources\BookResource;
 use Modules\Core\Filament\Resources\SettingResource;
 
 class AdminPanelProvider extends PanelProvider
@@ -29,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#086E7D'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -57,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->resources([
                 SettingResource::class,
+                BookResource::class,
             ]);
     }
 }
