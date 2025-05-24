@@ -24,7 +24,7 @@ class BookDatabaseSeeder extends Seeder
                 'pages' => 529,
                 'shelf_location' => 'A1-01',
                 'stock' => 10,
-                'available' => 10,
+                'available' => true,
                 'description' => 'Kisah anak-anak di Belitung yang berjuang menempuh pendidikan.',
             ],
             [
@@ -38,7 +38,7 @@ class BookDatabaseSeeder extends Seeder
                 'pages' => 320,
                 'shelf_location' => 'B2-03',
                 'stock' => 5,
-                'available' => 5,
+                'available' => true,
                 'description' => 'Panduan mengubah kebiasaan buruk dan membentuk kebiasaan baik.',
             ],
             [
@@ -52,7 +52,7 @@ class BookDatabaseSeeder extends Seeder
                 'pages' => 180,
                 'shelf_location' => 'C3-02',
                 'stock' => 7,
-                'available' => 7,
+                'available' => true,
                 'description' => 'Novel tentang kehidupan orang kaya di Amerika pada tahun 1920-an.',
             ],
             [
@@ -66,7 +66,7 @@ class BookDatabaseSeeder extends Seeder
                 'pages' => 250,
                 'shelf_location' => 'D4-05',
                 'stock' => 15,
-                'available' => 15,
+                'available' => true,
                 'description' => 'Buku ini adalah panduan lengkap untuk belajar PHP dari nol.',
             ],
             [
@@ -80,7 +80,7 @@ class BookDatabaseSeeder extends Seeder
                 'pages' => 176,
                 'shelf_location' => 'E5-07',
                 'stock' => 8,
-                'available' => 8,
+                'available' => true,
                 'description' => 'Buku ini membahas fitur-fitur terbaik dari JavaScript.',
             ],
             [
@@ -94,7 +94,7 @@ class BookDatabaseSeeder extends Seeder
                 'pages' => 300,
                 'shelf_location' => 'F6-09',
                 'stock' => 12,
-                'available' => 12,
+                'available' => true,
                 'description' => 'Buku ini membahas pentingnya pendidikan karakter dalam pembelajaran.',
             ],
             [
@@ -108,7 +108,7 @@ class BookDatabaseSeeder extends Seeder
                 'pages' => 464,
                 'shelf_location' => 'G7-11',
                 'stock' => 6,
-                'available' => 6,
+                'available' => true,
                 'description' => 'Buku ini membahas prinsip-prinsip menulis kode yang bersih dan mudah dipahami.',
             ],
         ];

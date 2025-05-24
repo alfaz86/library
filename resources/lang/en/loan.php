@@ -38,4 +38,12 @@ return [
             'book_count' => 'Book Count',
         ],
     ],
+    'notifications' => [
+        'loan_created' => 'Loan successfully created.',
+        'loan_updated' => 'Loan successfully updated.',
+        'loan_deleted' => 'Loan successfully deleted.',
+        'loan_deleted_detail' => 'Successfully deleted :deleted loans.',
+        'loan_can\'t_be_deleted_title' => 'Some loans cannot be deleted.',
+        'loan_can\'t_be_deleted_body' => 'Loans with "Returned" or "Late" status cannot be deleted.',
+    ],
 ];

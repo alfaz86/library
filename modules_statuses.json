@@ -8,5 +8,6 @@
     "Settings": true,
     "Book": true,
     "Member": true,
-    "Loan": true
+    "Loan": true,
+    "LoanReturn": true
 }

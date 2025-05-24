@@ -75,7 +75,8 @@ class MemberResource extends Resource
 
                 Forms\Components\Toggle::make('is_active')
                     ->label(__('member.fields.is_active'))
-                    ->default(true),
+                    ->default(true)
+                    ->inline(false),
             ]);
     }
 

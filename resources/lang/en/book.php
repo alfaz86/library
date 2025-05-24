@@ -36,4 +36,13 @@ return [
     'validation' => [
         'isbn_unique' => 'The ISBN number has already been used.',
     ],
+    'table' => [
+        'columns' => [
+            'available' => [
+                'true' => 'Available',
+                'false' => 'Not Available',
+            ],
+            'stock_remaining' => 'Stock Remaining',
+        ],
+    ],
 ];

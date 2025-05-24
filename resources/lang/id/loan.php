@@ -38,4 +38,12 @@ return [
             'book_count' => 'Jumlah Buku',
         ],
     ],
+    'notifications' => [
+        'loan_created' => 'Pinjaman berhasil dibuat.',
+        'loan_updated' => 'Pinjaman berhasil diperbarui.',
+        'loan_deleted' => 'Pinjaman berhasil dihapus.',
+        'loan_deleted_detail' => 'Berhasil menghapus :deleted pinjaman.',
+        'loan_can\'t_be_deleted_title' => 'Beberapa pinjaman tidak dapat dihapuskan.',
+        'loan_can\'t_be_deleted_body' => 'Pinjaman dengan status "Dikembalikan" atau "Terlambat" tidak dapat dihapus.',
+    ],
 ];

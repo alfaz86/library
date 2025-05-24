@@ -12,7 +12,6 @@ class CreateLoan extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // Ambil data loan_books dan simpan di variabel sementara
         $this->loanBooksData = $data['loan_books'] ?? [];
         unset($data['loan_books']);
 

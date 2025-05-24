@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('pages')->nullable();
             $table->string('shelf_location')->nullable();
             $table->integer('stock')->default(0);
-            $table->integer('available')->default(0);
+            $table->boolean('available')->default(false);
             $table->text('description')->nullable();
             $table->string('cover_image')->nullable();
             $table->timestamps();

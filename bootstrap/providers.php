@@ -7,4 +7,5 @@ return [
     Modules\Book\Providers\BookServiceProvider::class,
     Modules\Member\Providers\MemberServiceProvider::class,
     Modules\Loan\Providers\LoanServiceProvider::class,
+    Modules\LoanReturn\Providers\ReturnServiceProvider::class,
 ];

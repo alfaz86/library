@@ -11,6 +11,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -23,6 +24,7 @@ use Modules\Core\Filament\Resources\SettingResource;
 use Modules\Core\Models\Setting;
 use FilipFonal\FilamentLogManager\FilamentLogManager;
 use Modules\Loan\Filament\Resources\LoanResource;
+use Modules\LoanReturn\Filament\Resources\LoanReturnResource;
 use Modules\Member\Filament\Resources\MemberResource;
 
 class AdminPanelProvider extends PanelProvider
@@ -68,6 +70,7 @@ class AdminPanelProvider extends PanelProvider
                 BookResource::class,
                 MemberResource::class,
                 LoanResource::class,
+                LoanReturnResource::class,
             ])
             ->userMenuItems([
                 MenuItem::make()
@@ -83,7 +86,13 @@ class AdminPanelProvider extends PanelProvider
                     'name' => $this->getBrand('library_name'),
                 ]
             ))
-            ->plugins($plugins);
+            ->plugins($plugins)
+            ->renderHook(
+                PanelsRenderHook::SIDEBAR_NAV_START,
+                function () {
+                    return view('core::filament.sidebar.customize');
+                }
+            );
     }
 
     private function getBrand(string $key): mixed

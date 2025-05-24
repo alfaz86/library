@@ -2,6 +2,7 @@
 
 namespace Modules\Loan\Filament\Resources;
 
+use Filament\Tables\Actions\DeleteAction;
 use Modules\Loan\Filament\Resources\LoanResource\Pages;
 use Modules\Loan\Filament\Resources\LoanResource\Pages\CreateLoan;
 use Modules\Loan\Filament\Resources\LoanResource\Pages\EditLoan;
@@ -14,11 +15,13 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Log;
 use Modules\Book\Models\Book;
 
 class LoanResource extends Resource
@@ -62,7 +65,7 @@ class LoanResource extends Resource
                 ->schema([
                     Select::make('book_id')
                         ->label(__('loan.fields.book_id'))
-                        ->options(Book::query()->pluck('title', 'id'))
+                        ->options(Book::pluck('title', 'id'))
                         ->searchable()
                         ->required(),
                 ])
@@ -109,18 +112,57 @@ class LoanResource extends Resource
                 Tables\Columns\TextColumn::make('loan_books_count')
                     ->label(__('loan.table.columns.book_count'))
                     ->counts('loan_books')
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->label(__('loan.fields.status'))
+                    ->options([
+                        Loan::STATUS_BORROW => __('loan.status.borrow'),
+                        Loan::STATUS_RETURNED => __('loan.status.returned'),
+                        Loan::STATUS_LATE => __('loan.status.late'),
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function ($records, $action) {
+                            $blocked = [];
+                            $deleted = 0;
+
+                            foreach ($records as $record) {
+                                if ($record->loan_returns()->count() > 0) {
+                                    $blocked[] = $record->id;
+                                } else {
+                                    $record->delete();
+                                    $deleted++;
+                                }
+                            }
+                            
+                            Log::info('Bulk delete loans action executed', [
+                                'deleted' => count($records) - count($blocked),
+                                'blocked' => $blocked,
+                            ]);
+
+                            if (count($blocked)) {
+                                Notification::make()
+                                    ->title(__('loan.notifications.loan_can\'t_be_deleted_title'))
+                                    ->body(__('loan.notifications.loan_can\'t_be_deleted_body'))
+                                    ->danger()
+                                    ->send();
+                            }
+                            
+                            if ($deleted > 0) {
+                                Notification::make()
+                                    ->title(__('loan.notifications.loan_deleted'))
+                                    ->body(__('loan.notifications.loan_deleted_detail', ['deleted' => $deleted]))
+                                    ->success()
+                                    ->send();
+                            }
+                        }),
                 ]),
             ]);
     }

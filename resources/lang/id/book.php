@@ -36,4 +36,13 @@ return [
     'validation' => [
         'isbn_unique' => 'Nomor ISBN sudah digunakan.',
     ],
+    'table' => [
+        'columns' => [
+            'available' => [
+                'true' => 'Tersedia',
+                'false' => 'Tidak Tersedia',
+            ],
+            'stock_remaining' => 'Sisa Stok',
+        ],
+    ],
 ];

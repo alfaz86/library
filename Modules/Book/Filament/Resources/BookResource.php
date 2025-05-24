@@ -2,6 +2,8 @@
 
 namespace Modules\Book\Filament\Resources;
 
+use Filament\Forms\Components\Placeholder;
+use Illuminate\Support\HtmlString;
 use Modules\Book\Filament\Resources\BookResource\Pages;
 use Modules\Book\Filament\Resources\BookResource\Pages\CreateBook;
 use Modules\Book\Filament\Resources\BookResource\Pages\EditBook;
@@ -16,6 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rule;
+use Modules\Loan\Models\Loan;
 
 class BookResource extends Resource
 {
@@ -98,13 +101,32 @@ class BookResource extends Resource
 
                 Forms\Components\Toggle::make('available')
                     ->label(__('book.fields.available'))
-                    ->default(true),
+                    ->default(true)
+                    ->inline(false)
+                    ->hidden(),
 
                 Forms\Components\FileUpload::make('cover_image')
                     ->label(__('book.fields.cover_image'))
                     ->image()
                     ->directory('covers')
                     ->hidden(),
+
+                Forms\Components\Section::make('Peminjam Saat Ini')
+                    ->hidden(fn(?Book $record) => $record === null)
+                    ->schema([
+                        Placeholder::make('')
+                            ->content(function ($state, $get) {
+                                $borrowers = Loan::whereHas('loan_books', function (Builder $query) use ($get) {
+                                    $query->where('book_id', $get('id'));
+                                })->where('status', 'borrow')->with('member')->get();
+
+                                return new HtmlString(
+                                    view('book::filament.components.current-borrowers', [
+                                        'borrowers' => $borrowers,
+                                    ])->render()
+                                );
+                            }),
+                    ]),
 
             ]);
     }
@@ -163,8 +185,25 @@ class BookResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\BooleanColumn::make('available')
+                Tables\Columns\TextColumn::make('stock_remaining')
+                    ->badge()
+                    ->color(fn($state): string => match (true) {
+                        $state <= 0 => 'danger',
+                        default => 'success',
+                    })
+                    ->label(__('book.table.columns.stock_remaining'))
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('available')
+                    ->color(fn($state): string => match (true) {
+                        $state === true => 'success',
+                        $state === false => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn($state): string => __('book.table.columns.available.' . (is_bool($state) ? ($state ? 'true' : 'false') : 'unknown')))
                     ->label(__('book.fields.available')),
+
             ])
             ->filters([
                 //

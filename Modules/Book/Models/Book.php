@@ -4,6 +4,8 @@ namespace Modules\Book\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Loan\Models\Loan;
+use Modules\Loan\Models\LoanBook;
 
 class Book extends Model
 {
@@ -24,4 +26,25 @@ class Book extends Model
         'description',
         'cover_image',
     ];
+
+    protected $appends = [
+        'stock_remaining',
+    ];
+
+    public function getStockRemainingAttribute(): int
+    {
+        return $this->stock - $this->loans()->where('status', 'borrow')->count();
+    }
+
+    public function loans()
+    {
+        return $this->belongsToMany(Loan::class, LoanBook::class)
+            ->withTimestamps();
+    }
+
+    public function loanBooks()
+    {
+        return $this->hasMany(LoanBook::class);
+    }
+
 }
