@@ -1,6 +1,6 @@
 {
-    "name": "Return",
-    "alias": "return",
+    "name": "LoanReturn",
+    "alias": "loan-return",
     "description": "",
     "keywords": [],
     "priority": 0,

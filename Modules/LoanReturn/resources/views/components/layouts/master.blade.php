@@ -7,7 +7,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <title>Return Module - {{ config('app.name', 'Laravel') }}</title>
+        <title>LoanReturn Module - {{ config('app.name', 'Laravel') }}</title>
 
         <meta name="description" content="{{ $description ?? '' }}">
         <meta name="keywords" content="{{ $keywords ?? '' }}">
@@ -18,12 +18,12 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         {{-- Vite CSS --}}
-        {{-- {{ module_vite('build-return', 'resources/assets/sass/app.scss') }} --}}
+        {{-- {{ module_vite('build-loan-return', 'resources/assets/sass/app.scss') }} --}}
     </head>
 
     <body>
         {{ $slot }}
 
         {{-- Vite JS --}}
-        {{-- {{ module_vite('build-return', 'resources/assets/js/app.js') }} --}}
+        {{-- {{ module_vite('build-loan-return', 'resources/assets/js/app.js') }} --}}
     </body>

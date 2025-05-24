@@ -12,7 +12,7 @@ class LoanReturnController extends Controller
      */
     public function index()
     {
-        return view('return::index');
+        return view('loan-return::index');
     }
 
     /**
@@ -20,7 +20,7 @@ class LoanReturnController extends Controller
      */
     public function create()
     {
-        return view('return::create');
+        return view('loan-return::create');
     }
 
     /**
@@ -33,7 +33,7 @@ class LoanReturnController extends Controller
      */
     public function show($id)
     {
-        return view('return::show');
+        return view('loan-return::show');
     }
 
     /**
@@ -41,7 +41,7 @@ class LoanReturnController extends Controller
      */
     public function edit($id)
     {
-        return view('return::edit');
+        return view('loan-return::edit');
     }
 
     /**
