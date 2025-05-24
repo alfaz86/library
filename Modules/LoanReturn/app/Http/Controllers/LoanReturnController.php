@@ -2,10 +2,10 @@
 
 namespace Modules\LoanReturn\Http\Controllers;
 
-use Modules\LoanReturn\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ReturnController extends Controller
+class LoanReturnController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -2,7 +2,7 @@
 
 namespace Modules\Member\Http\Controllers;
 
-use Modules\Member\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller

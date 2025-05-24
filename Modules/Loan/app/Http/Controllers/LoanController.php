@@ -2,7 +2,7 @@
 
 namespace Modules\Loan\Http\Controllers;
 
-use Modules\Loan\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class LoanController extends Controller

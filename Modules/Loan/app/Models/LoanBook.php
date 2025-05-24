@@ -27,6 +27,18 @@ class LoanBook extends Model
                 }
             }
         });
+
+        static::deleting(function (LoanBook $loanBook) {
+            $book = Book::find($loanBook->book_id);
+            if ($book) {
+                $remainingStock = $book->stock_remaining + 1; // Adding back the stock when a loan book is deleted
+                if ($remainingStock > 0) {
+                    $book->available = true; // Set available to true if stock is greater than 0
+                    $book->saveQuietly();
+                    Log::info("Book ID {$book->id} stock updated to {$remainingStock} after loan book deletion.");
+                }
+            }
+        });
     }
 
     public function loan(): BelongsTo

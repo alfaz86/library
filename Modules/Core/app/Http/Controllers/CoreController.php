@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Http\Controllers;
 
-use Modules\Core\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CoreController extends Controller
