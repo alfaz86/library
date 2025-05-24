@@ -49,7 +49,7 @@ class LoanReturnResource extends Resource
     {
         return $form->schema([
             Select::make('loan_id')
-                ->label(__('loan_return.fields.loan_id'))
+                ->label(__('loan_return.fields.borrower'))
                 ->searchable()
                 ->required()
                 ->getSearchResultsUsing(function (string $search) {
@@ -66,7 +66,7 @@ class LoanReturnResource extends Resource
                         ->get()
                         ->mapWithKeys(function ($loan) {
                             return [
-                                $loan->id => self::getLabelSelect($loan->id),
+                                $loan->id => self::getLabelSelect($loan->id, null),
                             ];
                         })
                         ->toArray();
@@ -74,7 +74,7 @@ class LoanReturnResource extends Resource
                 ->allowHtml()
                 ->required()
                 ->reactive()
-                ->getOptionLabelUsing(fn($value) => self::getLabelSelect($value))
+                ->getOptionLabelUsing(fn($value, $livewire) => self::getLabelSelect($value, $livewire))
                 ->disabled(fn($livewire) => $livewire instanceof ListRecords),
 
             Forms\Components\DatePicker::make('returned_date')
@@ -118,7 +118,7 @@ class LoanReturnResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('loan.member.name')
-                    ->label(__('loan_return.fields.loan_id'))
+                    ->label(__('loan_return.fields.borrower'))
                     ->searchable()
                     ->sortable(),
 
@@ -160,10 +160,14 @@ class LoanReturnResource extends Resource
         ];
     }
 
-    public static function getLabelSelect($value)
+    public static function getLabelSelect($value, $livewire = null): string
     {
         $loan = Loan::with('member', 'loan_books.book')->find($value);
         $count = $loan->loan_books->count();
+
+        if ($livewire instanceof ListRecords) {
+            return $loan->member->name;
+        }
 
         $badge = <<<HTML
                 <span style="--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);"

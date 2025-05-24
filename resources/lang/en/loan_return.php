@@ -7,6 +7,7 @@ return [
     ],
     'fields' => [
         'loan_id' => 'Loan',
+        'borrower' => 'Borrower',
         'returned_date' => 'Returned Date',
         'fine_amount' => 'Fine Amount',
     ],
