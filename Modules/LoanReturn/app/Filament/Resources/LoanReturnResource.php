@@ -8,6 +8,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\ListRecords;
 use Modules\Book\Models\Book;
+use Modules\Fines\Services\FinesService;
 use Modules\Loan\Models\Loan;
 use Modules\LoanReturn\Filament\Resources\LoanReturnResource\Pages\CreateLoanReturn;
 use Modules\LoanReturn\Filament\Resources\LoanReturnResource\Pages\EditLoanReturn;
@@ -74,6 +75,16 @@ class LoanReturnResource extends Resource
                 ->allowHtml()
                 ->required()
                 ->reactive()
+                ->afterStateUpdated(function (callable $set, $state, $get) {
+                    $loanId = $get('loan_id');
+                    $returnedDate = $get('returned_date');
+
+                    if ($state && $returnedDate && isModuleActive('Fines')) {
+                        $fine = FinesService::calculateFine($loanId, $returnedDate);
+                        $set('fine_amount', formatCurrency($fine, 'IDR', 'id_ID'));
+                    }
+                })
+
                 ->getOptionLabelUsing(fn($value, $livewire) => self::getLabelSelect($value, $livewire))
                 ->disabled(fn($livewire) => $livewire instanceof ListRecords),
 
@@ -81,6 +92,17 @@ class LoanReturnResource extends Resource
                 ->label(__('loan_return.fields.returned_date'))
                 ->default(now())
                 ->required()
+                ->native(false)
+                ->reactive()
+                ->afterStateUpdated(function (callable $set, $state, $get) {
+                    $loanId = $get('loan_id');
+                    $returnedDate = $get('returned_date');
+
+                    if ($loanId && $returnedDate && isModuleActive('Fines')) {
+                        $fine = FinesService::calculateFine($loanId, $returnedDate);
+                        $set('fine_amount', formatCurrency($fine, 'IDR', 'id_ID'));
+                    }
+                })
                 ->disabled(fn($livewire) => $livewire instanceof ListRecords),
 
             Fieldset::make(__('loan.fields.loan_books'))
@@ -110,13 +132,20 @@ class LoanReturnResource extends Resource
                 ->extraAttributes([
                     'class' => 'bg-white dark:bg-gray-900 rounded-lg',
                 ]),
+
+            TextInput::make('fine_amount')
+                ->label(__('loan_return.fields.fine_amount'))
+                ->default(0)
+                ->readOnly()
+                ->formatStateUsing(fn($state) => formatCurrency($state, 'IDR', 'id_ID'))
+                ->visible(fn() => isModuleActive('Fines')),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
+            ->columns(array_filter([
                 Tables\Columns\TextColumn::make('loan.member.name')
                     ->label(__('loan_return.fields.borrower'))
                     ->searchable()
@@ -127,11 +156,14 @@ class LoanReturnResource extends Resource
                     ->date()
                     ->sortable(),
 
+                isModuleActive('Fines') ?
                 Tables\Columns\TextColumn::make('fine_amount')
                     ->label(__('loan_return.fields.fine_amount'))
                     ->money('IDR')
-                    ->sortable(),
-            ])
+                    ->sortable()
+                    ->formatStateUsing(fn($state) => formatCurrency($state, 'IDR', 'id_ID'))
+                : null,
+            ]))
             ->filters([
                 //
             ])

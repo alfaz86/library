@@ -23,6 +23,7 @@ use Modules\Book\Filament\Resources\BookResource;
 use Modules\Core\Filament\Resources\SettingResource;
 use Modules\Core\Models\Setting;
 use FilipFonal\FilamentLogManager\FilamentLogManager;
+use Modules\Fines\Filament\Pages\FinesSettings;
 use Modules\Loan\Filament\Resources\LoanResource;
 use Modules\LoanReturn\Filament\Resources\LoanReturnResource;
 use Modules\Member\Filament\Resources\MemberResource;
@@ -43,9 +44,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
+            ->pages(array_filter([
                 Pages\Dashboard::class,
-            ])
+                isModuleActive('Fines') ? FinesSettings::class : null,
+            ]))
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
@@ -65,13 +67,13 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->resources([
+            ->resources(array_filter([
                 SettingResource::class,
                 BookResource::class,
                 MemberResource::class,
                 LoanResource::class,
                 LoanReturnResource::class,
-            ])
+            ]))
             ->userMenuItems([
                 MenuItem::make()
                     ->label('Settings')

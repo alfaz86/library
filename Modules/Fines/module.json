@@ -1,0 +1,12 @@
+{
+    "name": "Fines",
+    "alias": "fines",
+    "description": "module_manager.modules.fines.description",
+    "settings_route": "filament.admin.pages.fines-settings",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Fines\\Providers\\FinesServiceProvider"
+    ],
+    "files": []
+}

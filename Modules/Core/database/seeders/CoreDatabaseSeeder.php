@@ -14,8 +14,6 @@ class CoreDatabaseSeeder extends Seeder
     {
         Setting::set('library_name', 'Perpustakaan Umum');
         Setting::set('library_logo', 'book.png');
-        Setting::set('loan_duration_days', '7');
-        Setting::set('fine_per_day', '500');
         Setting::set('logger', '1');
     }
 }

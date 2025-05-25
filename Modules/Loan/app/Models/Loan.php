@@ -2,11 +2,10 @@
 
 namespace Modules\Loan\Models;
 
-use Filament\Notifications\Notification;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Log;
 use Modules\Book\Models\Book;
 use Modules\LoanReturn\Models\LoanReturn;
 use Modules\Member\Models\Member;
@@ -66,5 +65,17 @@ class Loan extends Model
     public function loan_returns(): HasMany
     {
         return $this->hasMany(LoanReturn::class);
+    }
+
+    public function isLate($due_date, $returned_date): bool
+    {
+        $dueDate = Carbon::parse($due_date)->startOfDay();
+        $returnedDate = Carbon::parse($returned_date)->startOfDay();
+
+        if ($returnedDate->greaterThan($dueDate)) {
+            return true;
+        }
+
+        return false;
     }
 }

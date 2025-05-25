@@ -2,6 +2,7 @@
 
 namespace Modules\LoanReturn\Models;
 
+use App\Casts\CentsCast;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Loan\Models\Loan;
 
@@ -11,6 +12,10 @@ class LoanReturn extends Model
         'loan_id',
         'returned_date',
         'fine_amount',
+    ];
+
+    protected $casts = [
+        'fine_amount' => CentsCast::class,
     ];
 
     public static function booted(): void

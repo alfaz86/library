@@ -9,5 +9,6 @@
     "Book": true,
     "Member": true,
     "Loan": true,
-    "LoanReturn": true
+    "LoanReturn": true,
+    "Fines": true
 }

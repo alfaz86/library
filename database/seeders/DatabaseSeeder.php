@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Modules\Book\Database\Seeders\BookDatabaseSeeder;
 use Modules\Core\Database\Seeders\CoreDatabaseSeeder;
+use Modules\Fines\Database\Seeders\FinesDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CoreDatabaseSeeder::class,
             BookDatabaseSeeder::class,
+            FinesDatabaseSeeder::class,
         ]);
     }
 }
