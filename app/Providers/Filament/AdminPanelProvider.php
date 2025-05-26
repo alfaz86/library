@@ -19,6 +19,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Modules\Book\Filament\Resources\BookResource;
 use Modules\Core\Filament\Resources\SettingResource;
@@ -97,6 +98,10 @@ class AdminPanelProvider extends PanelProvider
 
     private function getBrand(string $key): mixed
     {
+        if (!Schema::hasTable('settings')) {
+            return null;
+        }
+
         $settings = Setting::query()
             ->where('key', $key)
             ->first();
