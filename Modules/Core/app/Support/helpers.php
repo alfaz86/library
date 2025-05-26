@@ -1,6 +1,6 @@
 <?php
 
-use Filament\Facades\Filament;
+use Illuminate\Support\Facades\Schema;
 use Modules\Core\Models\Setting;
 use Nwidart\Modules\Facades\Module;
 
@@ -22,7 +22,7 @@ if (!function_exists('isModuleActive')) {
 if (!function_exists('isPluginActive')) {
     function isPluginActive(string $pluginName): bool
     {
-        if (Setting::all()->isEmpty()) {
+        if (!Schema::hasTable('settings')) {
             return false;
         }
 

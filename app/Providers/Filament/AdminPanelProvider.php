@@ -44,8 +44,8 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages(array_filter([
                 Pages\Dashboard::class,
-                isModuleActive('Fines') ? FinesSettings::class : null,
-                isPluginActive('logger') ? FilamentLogManager::class : null,
+                fn () => isModuleActive('Fines') ? FinesSettings::class : null,
+                fn () => isPluginActive('logger') ? FilamentLogManager::class : null,
             ]))
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
