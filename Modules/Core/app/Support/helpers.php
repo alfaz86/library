@@ -22,13 +22,15 @@ if (!function_exists('isModuleActive')) {
 if (!function_exists('isPluginActive')) {
     function isPluginActive(string $pluginName): bool
     {
-        if (!Schema::hasTable('settings')) {
+        try {
+            if (!Schema::hasTable('settings')) {
+                return false;
+            }
+
+            return Setting::get($pluginName . '::is_active') == 1;
+        } catch (\Throwable $e) {
             return false;
         }
-
-        $is_active = Setting::get($pluginName . '::is_active');
-
-        return $is_active == 1 ? true : false;
     }
 }
 
