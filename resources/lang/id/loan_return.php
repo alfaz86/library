@@ -1,9 +1,11 @@
 <?php
 
 return [
+    'navigation_label' => 'Pengembalian',
     'resources' => [
-        'label' => 'Pengembalian Buku',
-        'plural_label' => 'Daftar Pengembalian Buku',
+        'label' => 'Pengembalian',
+        'plural_label' => 'Pengembalian',
+        'list' => 'Daftar Pengembalian',
     ],
     'fields' => [
         'loan_id' => 'Pinjaman',

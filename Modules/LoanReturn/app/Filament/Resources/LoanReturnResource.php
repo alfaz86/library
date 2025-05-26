@@ -18,6 +18,7 @@ use Modules\LoanReturn\Filament\Resources\LoanReturnResource\RelationManagers;
 use Modules\LoanReturn\Models\LoanReturn;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,9 +33,9 @@ class LoanReturnResource extends Resource
 {
     protected static ?string $model = LoanReturn::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-left';
 
-    protected static ?string $translationKey = 'loan_return.resources';
+    protected static ?int $navigationSort = 3;
 
     public static function getModelLabel(): string
     {
@@ -46,99 +47,113 @@ class LoanReturnResource extends Resource
         return __('loan_return.resources.plural_label');
     }
 
+    public function getTitle(): string
+    {
+        return __('loan_return.title');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('loan_return.navigation_label');
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Select::make('loan_id')
-                ->label(__('loan_return.fields.borrower'))
-                ->searchable()
-                ->required()
-                ->getSearchResultsUsing(function (string $search) {
-                    $driver = DB::getDriverName();
-                    $operator = $driver === 'pgsql' ? 'ilike' : 'like';
+            Section::make('')
+                ->columns(2)
+                ->schema([
+                    Select::make('loan_id')
+                        ->label(__('loan_return.fields.borrower'))
+                        ->searchable()
+                        ->required()
+                        ->getSearchResultsUsing(function (string $search) {
+                            $driver = DB::getDriverName();
+                            $operator = $driver === 'pgsql' ? 'ilike' : 'like';
 
-                    return Loan::query()
-                        ->where('status', '!=', 'returned')
-                        ->whereHas('member', function ($query) use ($search, $operator) {
-                            $query->where('name', $operator, "%{$search}%")
-                                ->orWhere('member_code', $operator, "%{$search}%");
+                            return Loan::query()
+                                ->where('status', '!=', 'returned')
+                                ->whereHas('member', function ($query) use ($search, $operator) {
+                                    $query->where('name', $operator, "%{$search}%")
+                                        ->orWhere('member_code', $operator, "%{$search}%");
+                                })
+                                ->with('member', 'loan_books')
+                                ->get()
+                                ->mapWithKeys(function ($loan) {
+                                    return [
+                                        $loan->id => self::getLabelSelect($loan->id, null),
+                                    ];
+                                })
+                                ->toArray();
                         })
-                        ->with('member', 'loan_books')
-                        ->get()
-                        ->mapWithKeys(function ($loan) {
-                            return [
-                                $loan->id => self::getLabelSelect($loan->id, null),
-                            ];
+                        ->allowHtml()
+                        ->required()
+                        ->reactive()
+                        ->afterStateUpdated(function (callable $set, $state, $get) {
+                            $loanId = $get('loan_id');
+                            $returnedDate = $get('returned_date');
+
+                            if ($state && $returnedDate && isModuleActive('Fines')) {
+                                $fine = FinesService::calculateFine($loanId, $returnedDate);
+                                $set('fine_amount', formatCurrency($fine, 'IDR', 'id_ID'));
+                            }
                         })
-                        ->toArray();
-                })
-                ->allowHtml()
-                ->required()
-                ->reactive()
-                ->afterStateUpdated(function (callable $set, $state, $get) {
-                    $loanId = $get('loan_id');
-                    $returnedDate = $get('returned_date');
 
-                    if ($state && $returnedDate && isModuleActive('Fines')) {
-                        $fine = FinesService::calculateFine($loanId, $returnedDate);
-                        $set('fine_amount', formatCurrency($fine, 'IDR', 'id_ID'));
-                    }
-                })
+                        ->getOptionLabelUsing(fn($value, $livewire) => self::getLabelSelect($value, $livewire))
+                        ->disabled(fn($livewire) => $livewire instanceof ListRecords),
 
-                ->getOptionLabelUsing(fn($value, $livewire) => self::getLabelSelect($value, $livewire))
-                ->disabled(fn($livewire) => $livewire instanceof ListRecords),
+                    Forms\Components\DatePicker::make('returned_date')
+                        ->label(__('loan_return.fields.returned_date'))
+                        ->default(now())
+                        ->required()
+                        ->native(false)
+                        ->reactive()
+                        ->afterStateUpdated(function (callable $set, $state, $get) {
+                            $loanId = $get('loan_id');
+                            $returnedDate = $get('returned_date');
 
-            Forms\Components\DatePicker::make('returned_date')
-                ->label(__('loan_return.fields.returned_date'))
-                ->default(now())
-                ->required()
-                ->native(false)
-                ->reactive()
-                ->afterStateUpdated(function (callable $set, $state, $get) {
-                    $loanId = $get('loan_id');
-                    $returnedDate = $get('returned_date');
+                            if ($loanId && $returnedDate && isModuleActive('Fines')) {
+                                $fine = FinesService::calculateFine($loanId, $returnedDate);
+                                $set('fine_amount', formatCurrency($fine, 'IDR', 'id_ID'));
+                            }
+                        })
+                        ->disabled(fn($livewire) => $livewire instanceof ListRecords),
 
-                    if ($loanId && $returnedDate && isModuleActive('Fines')) {
-                        $fine = FinesService::calculateFine($loanId, $returnedDate);
-                        $set('fine_amount', formatCurrency($fine, 'IDR', 'id_ID'));
-                    }
-                })
-                ->disabled(fn($livewire) => $livewire instanceof ListRecords),
+                    Fieldset::make(__('loan.fields.loan_books'))
+                        ->schema(function (callable $get) {
+                            $loanId = $get('loan_id');
 
-            Fieldset::make(__('loan.fields.loan_books'))
-                ->schema(function (callable $get) {
-                    $loanId = $get('loan_id');
+                            if (!$loanId) {
+                                return [
+                                    Placeholder::make('')
+                                        ->content(__('loan_return.messages.empty')),
+                                ];
+                            }
 
-                    if (!$loanId) {
-                        return [
-                            Placeholder::make('')
-                                ->content(__('loan_return.messages.empty')),
-                        ];
-                    }
+                            $loan = Loan::with('loan_books.book')->find($loanId);
+                            if (!$loan || $loan->loan_books->isEmpty()) {
+                                return [
+                                    Placeholder::make('empty')->content(__('loan_return.messages.no_books'))
+                                ];
+                            }
 
-                    $loan = Loan::with('loan_books.book')->find($loanId);
-                    if (!$loan || $loan->loan_books->isEmpty()) {
-                        return [
-                            Placeholder::make('empty')->content(__('loan_return.messages.no_books'))
-                        ];
-                    }
+                            return $loan->loan_books->map(function ($loanBook, $index) {
+                                return Placeholder::make("book_{$index}")
+                                    ->label(__('loan.fields.book_id') . ' #' . ($index + 1))
+                                    ->content($loanBook->book->title ?? '-');
+                            })->toArray();
+                        })
+                        ->extraAttributes([
+                            'class' => 'bg-white dark:bg-gray-900 rounded-lg',
+                        ]),
 
-                    return $loan->loan_books->map(function ($loanBook, $index) {
-                        return Placeholder::make("book_{$index}")
-                            ->label(__('loan.fields.book_id') . ' #' . ($index + 1))
-                            ->content($loanBook->book->title ?? '-');
-                    })->toArray();
-                })
-                ->extraAttributes([
-                    'class' => 'bg-white dark:bg-gray-900 rounded-lg',
+                    TextInput::make('fine_amount')
+                        ->label(__('loan_return.fields.fine_amount'))
+                        ->default(0)
+                        ->readOnly()
+                        ->formatStateUsing(fn($state) => formatCurrency($state, 'IDR', 'id_ID'))
+                        ->visible(fn() => isModuleActive('Fines')),
                 ]),
-
-            TextInput::make('fine_amount')
-                ->label(__('loan_return.fields.fine_amount'))
-                ->default(0)
-                ->readOnly()
-                ->formatStateUsing(fn($state) => formatCurrency($state, 'IDR', 'id_ID'))
-                ->visible(fn() => isModuleActive('Fines')),
         ]);
     }
 

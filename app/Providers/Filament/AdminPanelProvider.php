@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\FilamentLogManager;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -22,7 +23,6 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Modules\Book\Filament\Resources\BookResource;
 use Modules\Core\Filament\Resources\SettingResource;
 use Modules\Core\Models\Setting;
-use FilipFonal\FilamentLogManager\FilamentLogManager;
 use Modules\Fines\Filament\Pages\FinesSettings;
 use Modules\Loan\Filament\Resources\LoanResource;
 use Modules\LoanReturn\Filament\Resources\LoanReturnResource;
@@ -32,8 +32,6 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        $plugins = $this->getPlugins();
-
         return $panel
             ->default()
             ->id('admin')
@@ -47,6 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages(array_filter([
                 Pages\Dashboard::class,
                 isModuleActive('Fines') ? FinesSettings::class : null,
+                isPluginActive('logger') ? FilamentLogManager::class : null,
             ]))
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
@@ -76,19 +75,18 @@ class AdminPanelProvider extends PanelProvider
             ]))
             ->userMenuItems([
                 MenuItem::make()
-                    ->label('Settings')
+                    ->label(fn() => __('setting.menu_item'))
                     ->url(fn(): string => SettingResource::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
-            ->brandName($this->getBrand('library_name'))
+            ->brandName($this->getBrand('app::name'))
             ->brandLogo(fn() => view(
                 'core::filament.sidebar.logo',
                 [
-                    'logo' => $this->getBrand('library_logo'),
-                    'name' => $this->getBrand('library_name'),
+                    'logo' => $this->getBrand('app::logo'),
+                    'name' => $this->getBrand('app::name'),
                 ]
             ))
-            ->plugins($plugins)
             ->renderHook(
                 PanelsRenderHook::SIDEBAR_NAV_START,
                 function () {
@@ -106,32 +104,17 @@ class AdminPanelProvider extends PanelProvider
         if ($settings) {
             $value = $settings->value;
 
-            if ($key === 'library_logo') {
+            if ($key === 'app::logo') {
                 return $settings->getLogoUrl();
             }
 
             return $value;
         }
 
-        if ($key === 'library_name') {
+        if ($key === 'app::name') {
             return config('app.name');
         }
 
         return null;
-    }
-
-    private function getPlugins(): array
-    {
-        $settings = Setting::query()
-            ->where('key', 'logger')
-            ->first();
-
-        $plugins = [];
-
-        if ($settings && $settings->value == 1) {
-            $plugins[] = FilamentLogManager::make();
-        }
-
-        return $plugins;
     }
 }

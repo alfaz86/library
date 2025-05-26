@@ -1,23 +1,11 @@
 <?php
 
 return [
+    'navigation_label' => 'Anggota',
     'resources' => [
         'label' => 'Anggota',
-        'plural_label' => 'Daftar Anggota',
-    ],
-    'pages' => [
-        'index' => [
-            'label' => 'Semua :label',
-        ],
-        'create' => [
-            'label' => 'Tambah :label',
-        ],
-        'edit' => [
-            'label' => 'Ubah :label',
-        ],
-        'view' => [
-            'label' => 'Lihat :label',
-        ],
+        'plural_label' => 'Anggota',
+        'list' => 'Daftar Anggota',
     ],
     'fields' => [
         'name' => 'Nama',

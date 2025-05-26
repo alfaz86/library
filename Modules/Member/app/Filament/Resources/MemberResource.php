@@ -9,6 +9,7 @@ use Modules\Member\Filament\Resources\MemberResource\Pages\ListMembers;
 use Modules\Member\Filament\Resources\MemberResource\RelationManagers;
 use Modules\Member\Models\Member;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -21,7 +22,9 @@ class MemberResource extends Resource
 {
     protected static ?string $model = Member::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static ?int $navigationSort = 5;
 
     public static function getModelLabel(): string
     {
@@ -33,50 +36,64 @@ class MemberResource extends Resource
         return __('member.resources.plural_label');
     }
 
+    public function getTitle(): string
+    {
+        return __('member.title');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('member.navigation_label');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('member.fields.name'))
-                    ->required()
-                    ->maxLength(255),
+                Section::make('')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label(__('member.fields.name'))
+                            ->required()
+                            ->maxLength(255),
 
-                Forms\Components\TextInput::make('member_code')
-                    ->label(__('member.fields.member_code'))
-                    ->required()
-                    ->maxLength(255)
-                    ->rules(function (\Filament\Forms\Get $get, ?Member $record) {
-                        return [
-                            Rule::unique('members', 'member_code')->ignore($record?->id),
-                        ];
-                    })
-                    ->validationMessages([
-                        'unique' => __('member.validation.member_code_unique'),
-                    ]),
+                        Forms\Components\TextInput::make('member_code')
+                            ->label(__('member.fields.member_code'))
+                            ->required()
+                            ->maxLength(255)
+                            ->rules(function (\Filament\Forms\Get $get, ?Member $record) {
+                                return [
+                                    Rule::unique('members', 'member_code')->ignore($record?->id),
+                                ];
+                            })
+                            ->validationMessages([
+                                'unique' => __('member.validation.member_code_unique'),
+                            ]),
 
-                Forms\Components\TextInput::make('email')
-                    ->label(__('member.fields.email'))
-                    ->email()
-                    ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->label(__('member.fields.email'))
+                            ->email()
+                            ->maxLength(255),
 
-                Forms\Components\TextInput::make('phone')
-                    ->label(__('member.fields.phone'))
-                    ->rules([
-                        'nullable',
-                        'regex:/^[0-9+\s().-]+$/',
+                        Forms\Components\TextInput::make('phone')
+                            ->label(__('member.fields.phone'))
+                            ->rules([
+                                'nullable',
+                                'regex:/^[0-9+\s().-]+$/',
+                            ])
+                            ->maxLength(20),
+
+                        Forms\Components\Textarea::make('address')
+                            ->label(__('member.fields.address'))
+                            ->rows(3)
+                            ->maxLength(65535),
+
+                        Forms\Components\Toggle::make('is_active')
+                            ->label(__('member.fields.is_active'))
+                            ->default(true)
+                            ->inline(false),
                     ])
-                    ->maxLength(20),
-
-                Forms\Components\Textarea::make('address')
-                    ->label(__('member.fields.address'))
-                    ->rows(3)
-                    ->maxLength(65535),
-
-                Forms\Components\Toggle::make('is_active')
-                    ->label(__('member.fields.is_active'))
-                    ->default(true)
-                    ->inline(false),
             ]);
     }
 

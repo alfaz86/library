@@ -16,4 +16,9 @@ class ListLoanReturns extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public function getTitle(): string
+    {
+        return __('loan_return.resources.list');
+    }
 }

@@ -12,8 +12,8 @@ class CoreDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Setting::set('library_name', 'Perpustakaan Umum');
-        Setting::set('library_logo', 'book.png');
-        Setting::set('logger', '1');
+        Setting::set('app::name', 'Perpustakaan Umum');
+        Setting::set('app::logo', 'book.png');
+        Setting::set('logger::is_active', '1');
     }
 }

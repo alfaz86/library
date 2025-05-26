@@ -1,9 +1,11 @@
 <?php
 
 return [
+    'navigation_label' => 'Peminjaman',
     'resources' => [
-        'label' => 'Pinjaman',
-        'plural_label' => 'Daftar Pinjaman',
+        'label' => 'Peminjaman',
+        'plural_label' => 'Peminjaman',
+        'list' => 'Daftar Peminjaman',
     ],
     'pages' => [
         'index' => [
@@ -39,11 +41,11 @@ return [
         ],
     ],
     'notifications' => [
-        'loan_created' => 'Pinjaman berhasil dibuat.',
-        'loan_updated' => 'Pinjaman berhasil diperbarui.',
-        'loan_deleted' => 'Pinjaman berhasil dihapus.',
-        'loan_deleted_detail' => 'Berhasil menghapus :deleted pinjaman.',
-        'loan_can\'t_be_deleted_title' => 'Beberapa pinjaman tidak dapat dihapuskan.',
-        'loan_can\'t_be_deleted_body' => 'Pinjaman dengan status "Dikembalikan" atau "Terlambat" tidak dapat dihapus.',
+        'loan_created' => 'Peminjaman berhasil dibuat.',
+        'loan_updated' => 'Peminjaman berhasil diperbarui.',
+        'loan_deleted' => 'Peminjaman berhasil dihapus.',
+        'loan_deleted_detail' => 'Berhasil menghapus :deleted Peminjaman.',
+        'loan_can\'t_be_deleted_title' => 'Beberapa Peminjaman tidak dapat dihapuskan.',
+        'loan_can\'t_be_deleted_body' => 'Peminjaman dengan status "Dikembalikan" atau "Terlambat" tidak dapat dihapus.',
     ],
 ];

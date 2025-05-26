@@ -12,6 +12,7 @@ use Modules\Loan\Models\Loan;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -28,7 +29,9 @@ class LoanResource extends Resource
 {
     protected static ?string $model = Loan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-right';
+
+    protected static ?int $navigationSort = 2;
 
     public static function getModelLabel(): string
     {
@@ -40,39 +43,53 @@ class LoanResource extends Resource
         return __('loan.resources.plural_label');
     }
 
+    public function getTitle(): string
+    {
+        return __('loan.title');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('loan.navigation_label');
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Select::make('member_id')
-                ->label(__('loan.fields.member_id'))
-                ->relationship('member', 'name')
-                ->searchable()
-                ->required(),
-
-            DatePicker::make('loan_date')
-                ->label(__('loan.fields.loan_date'))
-                ->default(now())
-                ->required(),
-
-            DatePicker::make('due_date')
-                ->label(__('loan.fields.due_date'))
-                ->default(now()->addWeek())
-                ->required(),
-
-            Repeater::make('loan_books')
-                ->label(__('loan.fields.loan_books'))
-                ->relationship('loan_books')
+            Section::make('')
+                ->columns(2)
                 ->schema([
-                    Select::make('book_id')
-                        ->label(__('loan.fields.book_id'))
-                        ->options(Book::pluck('title', 'id'))
+                    Select::make('member_id')
+                        ->label(__('loan.fields.member_id'))
+                        ->relationship('member', 'name')
                         ->searchable()
                         ->required(),
-                ])
-                ->columnSpanFull()
-                ->minItems(1)
-                ->reorderable(false)
-                ->addActionLabel(__('loan.fields.add_book')),
+        
+                    DatePicker::make('loan_date')
+                        ->label(__('loan.fields.loan_date'))
+                        ->default(now())
+                        ->required(),
+        
+                    DatePicker::make('due_date')
+                        ->label(__('loan.fields.due_date'))
+                        ->default(now()->addWeek())
+                        ->required(),
+        
+                    Repeater::make('loan_books')
+                        ->label(__('loan.fields.loan_books'))
+                        ->relationship('loan_books')
+                        ->schema([
+                            Select::make('book_id')
+                                ->label(__('loan.fields.book_id'))
+                                ->options(Book::pluck('title', 'id'))
+                                ->searchable()
+                                ->required(),
+                        ])
+                        ->columnSpanFull()
+                        ->minItems(1)
+                        ->reorderable(false)
+                        ->addActionLabel(__('loan.fields.add_book')),
+                ]),
         ]);
     }
 
@@ -141,7 +158,7 @@ class LoanResource extends Resource
                                     $deleted++;
                                 }
                             }
-                            
+
                             Log::info('Bulk delete loans action executed', [
                                 'deleted' => count($records) - count($blocked),
                                 'blocked' => $blocked,
@@ -154,7 +171,7 @@ class LoanResource extends Resource
                                     ->danger()
                                     ->send();
                             }
-                            
+
                             if ($deleted > 0) {
                                 Notification::make()
                                     ->title(__('loan.notifications.loan_deleted'))

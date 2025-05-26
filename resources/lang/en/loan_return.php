@@ -1,9 +1,11 @@
 <?php
 
 return [
+    'navigation_label' => 'Loan Returns',
     'resources' => [
         'label' => 'Loan Return',
         'plural_label' => 'Loan Returns',
+        'list' => 'List of Loan Returns',
     ],
     'fields' => [
         'loan_id' => 'Loan',

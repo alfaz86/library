@@ -1,23 +1,11 @@
 <?php
 
 return [
+    'navigation_label' => 'Members',
     'resources' => [
         'label' => 'Member',
         'plural_label' => 'Members',
-    ],
-    'pages' => [
-        'index' => [
-            'label' => 'All :label',
-        ],
-        'create' => [
-            'label' => 'Add :label',
-        ],
-        'edit' => [
-            'label' => 'Edit :label',
-        ],
-        'view' => [
-            'label' => 'View :label',
-        ],
+        'list' => 'Member List',
     ],
     'fields' => [
         'name' => 'Name',

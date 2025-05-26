@@ -20,7 +20,7 @@ class Setting extends Model
 
     public static function getLogoUrl()
     {
-        $logo = static::get('library_logo');
+        $logo = static::get('app::logo');
         if (filter_var($logo, FILTER_VALIDATE_URL)) {
             return $logo;
         }

@@ -1,9 +1,11 @@
 <?php
 
 return [
+    'navigation_label' => 'Buku',
     'resources' => [
         'label' => 'Buku',
-        'plural_label' => 'Daftar Buku',
+        'plural_label' => 'Buku',
+        'list' => 'Daftar Buku',
     ],
     'pages' => [
         'index' => [

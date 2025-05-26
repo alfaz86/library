@@ -8,4 +8,5 @@ return [
         'title' => 'Pengaturan',
         'setting' => 'Pengaturan Umum',
     ],
+    'menu_item' => 'Pengaturan',
 ];

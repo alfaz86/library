@@ -16,4 +16,9 @@ class ListUsers extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public function getTitle(): string
+    {
+        return __('user.resources.list');
+    }
 }

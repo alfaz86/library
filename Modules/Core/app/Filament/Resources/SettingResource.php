@@ -20,9 +20,31 @@ class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static bool $shouldRegisterNavigation = true;
+    protected static ?int $navigationSort = 1;
+
+    public function getTitle(): string
+    {
+        return __('setting.title');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('setting.navigation_group');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('setting.navigation_label');
+    }
+
+    public function getBreadcrumbs(): array
+    {
+        return [
+            __('setting.breadcrumbs.title'),
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -30,7 +52,7 @@ class SettingResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('key')
                     ->required()
-                    ->unique(ignorable: fn ($record) => $record)
+                    ->unique(ignorable: fn($record) => $record)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('value')
                     ->required()
@@ -49,14 +71,14 @@ class SettingResource extends Resource
                     ->sortable()
                     ->searchable(),
             ])->filters([
-                //
-            ])->actions([
-                Tables\Actions\EditAction::make(),
-            ])->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                    //
+                ])->actions([
+                    Tables\Actions\EditAction::make(),
+                ])->bulkActions([
+                    Tables\Actions\BulkActionGroup::make([
+                        Tables\Actions\DeleteBulkAction::make(),
+                    ]),
+                ]);
     }
 
     public static function getRelations(): array

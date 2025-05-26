@@ -9,9 +9,11 @@ use Nwidart\Modules\Facades\Module;
 
 class ModuleManager extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-puzzle-piece';
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
 
     protected static string $view = 'filament.pages.module-manager';
+
+    protected static ?int $navigationSort = 2;
 
     public ?string $processingModule = null;
 

@@ -16,4 +16,9 @@ class ListMembers extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public function getTitle(): string
+    {
+        return __('member.resources.list');
+    }
 }

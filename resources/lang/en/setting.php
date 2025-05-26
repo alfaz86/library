@@ -8,4 +8,5 @@ return [
         'title' => 'Settings',
         'setting' => 'General Settings',
     ],
+    'menu_item' => 'Settings',
 ];

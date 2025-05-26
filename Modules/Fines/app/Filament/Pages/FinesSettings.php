@@ -16,7 +16,10 @@ class FinesSettings extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+
     protected static string $view = 'fines::filament.pages.fines-settings';
+
+    protected static ?int $navigationSort = 99;
 
     public $fine_amount;
     public $fine_interval;
@@ -59,7 +62,8 @@ class FinesSettings extends Page implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\Grid::make(2)
+            Forms\Components\Section::make('')
+                ->columns(2)
                 ->schema([
                     Forms\Components\TextInput::make('fine_amount')
                         ->label(__('fines::module.form.fine_amount'))

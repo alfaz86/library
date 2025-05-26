@@ -11,6 +11,7 @@ use Modules\Book\Filament\Resources\BookResource\Pages\ListBooks;
 use Modules\Book\Filament\Resources\BookResource\RelationManagers;
 use Modules\Book\Models\Book;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,7 +25,9 @@ class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
+    protected static ?int $navigationSort = 1;
 
     public static function getModelLabel(): string
     {
@@ -36,80 +39,95 @@ class BookResource extends Resource
         return __('book.resources.plural_label');
     }
 
+    public function getTitle(): string
+    {
+        return __('book.title');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('book.navigation_label');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->label(__('book.fields.title'))
-                    ->required()
-                    ->maxLength(255),
+                Section::make('')
+                    ->columns(2)
+                    ->schema([
 
-                Forms\Components\TextInput::make('author')
-                    ->label(__('book.fields.author'))
-                    ->required()
-                    ->maxLength(255),
+                        Forms\Components\TextInput::make('title')
+                            ->label(__('book.fields.title'))
+                            ->required()
+                            ->maxLength(255),
 
-                Forms\Components\TextInput::make('isbn')
-                    ->label(__('book.fields.isbn'))
-                    ->required()
-                    ->maxLength(13)
-                    ->numeric()
-                    ->rules(function (\Filament\Forms\Get $get, ?Book $record) {
-                        return [
-                            Rule::unique('books', 'isbn')->ignore($record?->id),
-                        ];
-                    })
-                    ->validationMessages([
-                        'unique' => __('book.validation.isbn_unique'),
+                        Forms\Components\TextInput::make('author')
+                            ->label(__('book.fields.author'))
+                            ->required()
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('isbn')
+                            ->label(__('book.fields.isbn'))
+                            ->required()
+                            ->maxLength(13)
+                            ->numeric()
+                            ->rules(function (\Filament\Forms\Get $get, ?Book $record) {
+                                return [
+                                    Rule::unique('books', 'isbn')->ignore($record?->id),
+                                ];
+                            })
+                            ->validationMessages([
+                                'unique' => __('book.validation.isbn_unique'),
+                            ]),
+
+                        Forms\Components\TextInput::make('publisher')
+                            ->label(__('book.fields.publisher'))
+                            ->required()
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('published_year')
+                            ->label(__('book.fields.published_year'))
+                            ->required()
+                            ->maxLength(4),
+
+                        Forms\Components\TextInput::make('category')
+                            ->label(__('book.fields.category'))
+                            ->required()
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('language')
+                            ->label(__('book.fields.language'))
+                            ->required()
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('pages')
+                            ->label(__('book.fields.pages'))
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('shelf_location')
+                            ->label(__('book.fields.shelf_location'))
+                            ->required()
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('stock')
+                            ->label(__('book.fields.stock'))
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\Toggle::make('available')
+                            ->label(__('book.fields.available'))
+                            ->default(true)
+                            ->inline(false)
+                            ->hidden(),
+
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->label(__('book.fields.cover_image'))
+                            ->image()
+                            ->directory('covers')
+                            ->hidden(),
                     ]),
-
-                Forms\Components\TextInput::make('publisher')
-                    ->label(__('book.fields.publisher'))
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('published_year')
-                    ->label(__('book.fields.published_year'))
-                    ->required()
-                    ->maxLength(4),
-
-                Forms\Components\TextInput::make('category')
-                    ->label(__('book.fields.category'))
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('language')
-                    ->label(__('book.fields.language'))
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('pages')
-                    ->label(__('book.fields.pages'))
-                    ->required()
-                    ->numeric(),
-
-                Forms\Components\TextInput::make('shelf_location')
-                    ->label(__('book.fields.shelf_location'))
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('stock')
-                    ->label(__('book.fields.stock'))
-                    ->required()
-                    ->numeric(),
-
-                Forms\Components\Toggle::make('available')
-                    ->label(__('book.fields.available'))
-                    ->default(true)
-                    ->inline(false)
-                    ->hidden(),
-
-                Forms\Components\FileUpload::make('cover_image')
-                    ->label(__('book.fields.cover_image'))
-                    ->image()
-                    ->directory('covers')
-                    ->hidden(),
 
                 Forms\Components\Section::make('Peminjam Saat Ini')
                     ->hidden(fn(?Book $record) => $record === null)
@@ -127,7 +145,6 @@ class BookResource extends Resource
                                 );
                             }),
                     ]),
-
             ]);
     }
 

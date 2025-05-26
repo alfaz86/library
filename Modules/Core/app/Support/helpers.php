@@ -1,5 +1,7 @@
 <?php
 
+use Filament\Facades\Filament;
+use Modules\Core\Models\Setting;
 use Nwidart\Modules\Facades\Module;
 
 if (!function_exists('setting')) {
@@ -9,7 +11,7 @@ if (!function_exists('setting')) {
     }
 }
 
-if (! function_exists('isModuleActive')) {
+if (!function_exists('isModuleActive')) {
     function isModuleActive(string $moduleName): bool
     {
         $module = Module::find($moduleName);
@@ -17,7 +19,16 @@ if (! function_exists('isModuleActive')) {
     }
 }
 
-if (! function_exists('formatCurrency')) {
+if (!function_exists('isPluginActive')) {
+    function isPluginActive(string $pluginName): bool
+    {
+        $is_active = Setting::get($pluginName . '::is_active');
+
+        return $is_active == 1 ? true : false;
+    }
+}
+
+if (!function_exists('formatCurrency')) {
     function formatCurrency(float $amount, string $currency = 'EUR', string $locale = 'nl'): string
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
@@ -26,7 +37,7 @@ if (! function_exists('formatCurrency')) {
     }
 }
 
-if (! function_exists('parseToNumber')) {
+if (!function_exists('parseToNumber')) {
     function parseToNumber(string $formatted): int
     {
         $cleaned = preg_replace('/[^\d,.-]/', '', $formatted);

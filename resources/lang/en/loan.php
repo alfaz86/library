@@ -1,9 +1,11 @@
 <?php
 
 return [
+    'navigation_label' => 'Loans',
     'resources' => [
         'label' => 'Loan',
         'plural_label' => 'Loans',
+        'list' => 'Loan List',
     ],
     'pages' => [
         'index' => [
