@@ -24,5 +24,18 @@ return [
                 'error' => 'Terjadi kesalahan saat mengaktifkan modul.',
             ],
         ],
+        'report' => [
+            'title' => 'Modul Laporan',
+            'status' => [
+                'enabled' => 'Diaktifkan',
+                'disabled' => 'Dinonaktifkan',
+            ],
+            'description' => 'Modul untuk menghasilkan berbagai data terkait manajemen buku dan data anggota.',
+            'actions' => [
+                'enable' => 'Aktifkan',
+                'disable' => 'Nonaktifkan',
+                'error' => 'Terjadi kesalahan saat mengaktifkan modul.',
+            ],
+        ],
     ]
 ];

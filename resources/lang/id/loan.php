@@ -48,4 +48,21 @@ return [
         'loan_can\'t_be_deleted_title' => 'Beberapa Peminjaman tidak dapat dihapuskan.',
         'loan_can\'t_be_deleted_body' => 'Peminjaman dengan status "Dikembalikan" atau "Terlambat" tidak dapat dihapus.',
     ],
+    'report_print' => [
+        'title' => 'Laporan Peminjaman',
+        'header' => 'Laporan Data Peminjaman',
+        'print_at' => 'Dicetak pada: :date',
+        'columns' => [
+            'member' => 'Anggota',
+            'loan_date' => 'Tanggal Pinjam',
+            'due_date' => 'Jatuh Tempo',
+            'status' => 'Status',
+            'book_count' => 'Jumlah Buku',
+            'loan_return' => [
+                'return_date' => 'Tanggal Pengembalian',
+                'fine' => 'Denda',
+                'no_return' => 'Belum dikembalikan',
+            ]
+        ],
+    ],
 ];

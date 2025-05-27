@@ -23,6 +23,7 @@ return [
             'per_item' => 'Per Item',
             'per_loan' => 'Per Loan',
         ],
+        'fine_type_tooltip' => 'The type of fine that will be applied to loans. "Per Item" means a fine is charged for each overdue item, while "Per Loan" means a fine is charged once for the entire loan.',
     ],
     'notifications' => [
         'save_success' => 'Fines settings saved successfully.',

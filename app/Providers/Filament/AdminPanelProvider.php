@@ -21,6 +21,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Modules\Report\Filament\Pages\Report;
 use Modules\Book\Filament\Resources\BookResource;
 use Modules\Core\Filament\Resources\SettingResource;
 use Modules\Core\Models\Setting;
@@ -46,6 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages(array_filter([
                 Pages\Dashboard::class,
                 isModuleActive('Fines') ? FinesSettings::class : null,
+                isModuleActive('Report') ? Report::class : null,
                 isPluginActive('logger') ? FilamentLogManager::class : null,
             ]))
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')

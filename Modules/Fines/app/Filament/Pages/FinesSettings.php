@@ -15,7 +15,7 @@ class FinesSettings extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
     protected static string $view = 'fines::filament.pages.fines-settings';
 
@@ -89,7 +89,8 @@ class FinesSettings extends Page implements HasForms
                             'per_loan' => __('fines::module.form.fine_types.per_loan'),
                         ])
                         ->required()
-                        ->native(false),
+                        ->native(false)
+                        ->tooltip(__('fines::module.form.fine_type_tooltip')),
 
                     Forms\Components\TextInput::make('max_days')
                         ->label(__('fines::module.form.max_days'))

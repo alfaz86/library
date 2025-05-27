@@ -209,7 +209,6 @@ class BookResource extends Resource
                         default => 'success',
                     })
                     ->label(__('book.table.columns.stock_remaining'))
-                    ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('available')

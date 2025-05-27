@@ -23,6 +23,7 @@ return [
             'per_item' => 'Per Item',
             'per_loan' => 'Per Pinjaman',
         ],
+        'fine_type_tooltip' => 'Jenis denda yang akan diterapkan pada pinjaman. "Per Item" berarti denda dikenakan untuk setiap item yang terlambat, sedangkan "Per Pinjaman" berarti denda dikenakan sekali untuk seluruh pinjaman.',
     ],
     'notifications' => [
         'save_success' => 'Pengaturan denda berhasil disimpan.',

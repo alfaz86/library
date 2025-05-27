@@ -10,5 +10,6 @@
     "Member": true,
     "Loan": true,
     "LoanReturn": true,
-    "Fines": true
+    "Fines": true,
+    "Report": true
 }

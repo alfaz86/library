@@ -18,9 +18,11 @@
                 </div>
 
                 <div class="flex items-center justify-end mt-3">
-                    <x-filament::icon-button icon="heroicon-m-cog-6-tooth" color="gray" label="fines-settings"
-                        style="zoom: 150%; margin-right: 1px;" :disabled="!$module->isEnabled()" tag="a"
-                        href="{{ $module->isEnabled() && $module->get('settings_route') ? route($module->get('settings_route')) : '#' }}" />
+                    @if ($module->isEnabled() && $module->get('setting_route'))
+                        <x-filament::icon-button icon="heroicon-m-cog-6-tooth" color="gray" label="fines-settings"
+                            style="zoom: 150%; margin-right: 1px;" :disabled="!$module->isEnabled()" tag="a"
+                            :href="route($module->get('setting_route'))" />
+                    @endif
 
                     <x-filament::button wire:click="toggleModule('{{ $module->getName() }}')"
                         :disabled="$processingModule === $module->getName()"

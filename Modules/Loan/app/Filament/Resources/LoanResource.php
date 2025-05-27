@@ -68,11 +68,13 @@ class LoanResource extends Resource
                     DatePicker::make('loan_date')
                         ->label(__('loan.fields.loan_date'))
                         ->default(now())
+                        ->native(false)
                         ->required(),
         
                     DatePicker::make('due_date')
                         ->label(__('loan.fields.due_date'))
                         ->default(now()->addWeek())
+                        ->native(false)
                         ->required(),
         
                     Repeater::make('loan_books')

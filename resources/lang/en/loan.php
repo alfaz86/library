@@ -48,4 +48,21 @@ return [
         'loan_can\'t_be_deleted_title' => 'Some loans cannot be deleted.',
         'loan_can\'t_be_deleted_body' => 'Loans with "Returned" or "Late" status cannot be deleted.',
     ],
+    'report_print' => [
+        'title' => 'Loan Report',
+        'header' => 'Loan Data Report',
+        'print_at' => 'Printed on: :date',
+        'columns' => [
+            'member' => 'Member',
+            'loan_date' => 'Loan Date',
+            'due_date' => 'Due Date',
+            'status' => 'Status',
+            'book_count' => 'Book Count',
+            'loan_return' => [
+                'return_date' => 'Return Date',
+                'fine' => 'Fine',
+                'no_return' => 'Not return yet',
+            ]
+        ],
+    ],
 ];

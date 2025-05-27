@@ -23,5 +23,18 @@ return [
                 'disable' => 'Disable',
             ],
         ],
+        'report' => [
+            'title' => 'Report Module',
+            'status' => [
+                'enabled' => 'Enabled',
+                'disabled' => 'Disabled',
+            ],
+            'description' => 'Module to generate various data related to book management and member data.',
+            'actions' => [
+                'enable' => 'Enable',
+                'disable' => 'Disable',
+                'error' => 'An error occurred while enabling the module.',
+            ],
+        ],
     ]
 ];
