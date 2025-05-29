@@ -13,7 +13,7 @@ class CoreDatabaseSeeder extends Seeder
     public function run(): void
     {
         Setting::set('app::name', 'Perpustakaan Umum');
-        Setting::set('app::logo', 'book.png');
+        Setting::set('app::logo', asset('images/book.png'));
         Setting::set('logger::is_active', '1');
     }
 }

@@ -129,7 +129,7 @@ class BookResource extends Resource
                             ->hidden(),
                     ]),
 
-                Forms\Components\Section::make('Peminjam Saat Ini')
+                Forms\Components\Section::make(__('book.table.current_borrowers.title'))
                     ->hidden(fn(?Book $record) => $record === null)
                     ->schema([
                         Placeholder::make('')

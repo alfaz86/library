@@ -3,6 +3,7 @@
 namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Setting extends Model
 {
@@ -25,6 +26,12 @@ class Setting extends Model
             return $logo;
         }
 
-        return asset('images/' . $logo);
+        // check in the storage
+        if ($logo && Storage::disk('public')->exists($logo)) {
+            return asset(Storage::url($logo));
+        }
+
+        // default logo
+        return asset('images/book.png');
     }
 }

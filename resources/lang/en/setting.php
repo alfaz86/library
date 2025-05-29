@@ -9,4 +9,12 @@ return [
         'setting' => 'General Settings',
     ],
     'menu_item' => 'Settings',
+    'fields' => [
+        'app_name' => 'Application Name',
+        'app_logo' => 'Application Logo',
+    ],
+    'notifications' => [
+        'save_success' => 'Settings saved successfully.',
+        'save_error' => 'An error occurred while saving settings.',
+    ],
 ];

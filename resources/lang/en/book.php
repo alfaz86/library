@@ -46,6 +46,13 @@ return [
             ],
             'stock_remaining' => 'Stock Remaining',
         ],
+        'current_borrowers' => [
+            'title' => 'Current Borrowers',
+            'empty' => 'No current borrowers.',
+            'borrower' => 'Borrower',
+            'borrowed_at' => 'Borrowed At',
+            'due_date' => 'Due Date',
+        ],
     ],
     'report_print' => [
         'title' => 'Book Report',

@@ -46,6 +46,13 @@ return [
             ],
             'stock_remaining' => 'Sisa Stok',
         ],
+        'current_borrowers' => [
+            'title' => 'Peminjam Saat Ini',
+            'empty' => 'Tidak ada peminjam saat ini.',
+            'borrower' => 'Peminjam',
+            'borrowed_at' => 'Dipinjam pada',
+            'due_date' => 'Tanggal Jatuh Tempo',
+        ],
     ],
     'report_print' => [
         'title' => 'Laporan Buku',

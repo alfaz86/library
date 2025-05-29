@@ -27,6 +27,10 @@ class Book extends Model
         'cover_image',
     ];
 
+    protected $casts = [
+        'available' => 'boolean',
+    ];
+
     protected $appends = [
         'stock_remaining',
     ];

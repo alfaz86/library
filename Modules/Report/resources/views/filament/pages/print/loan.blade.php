@@ -64,7 +64,7 @@
                     </td>
                     <td>{{ $loan->loan_date }}</td>
                     <td>{{ $loan->due_date }}</td>
-                    <td>{{ $loan->status }}</td>
+                    <td>{{ __('loan.status.' . $loan->status) }}</td>
                 </tr>
                 @forelse ($loan->loan_returns as $item)
                     <tr>

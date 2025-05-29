@@ -2,13 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\FilamentLogManager;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Modules\Report\Filament\Pages\Report;
 use Modules\Book\Filament\Resources\BookResource;
-use Modules\Core\Filament\Resources\SettingResource;
+use Modules\Core\Filament\Pages\Setting as SettingPage;
 use Modules\Core\Models\Setting;
 use Modules\Fines\Filament\Pages\FinesSettings;
 use Modules\Loan\Filament\Resources\LoanResource;
@@ -45,7 +45,8 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages(array_filter([
-                Pages\Dashboard::class,
+                Dashboard::class,
+                SettingPage::class,
                 isModuleActive('Fines') ? FinesSettings::class : null,
                 isModuleActive('Report') ? Report::class : null,
                 isPluginActive('logger') ? FilamentLogManager::class : null,
@@ -70,7 +71,6 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->resources(array_filter([
-                SettingResource::class,
                 BookResource::class,
                 MemberResource::class,
                 LoanResource::class,
@@ -79,7 +79,7 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems([
                 MenuItem::make()
                     ->label(fn() => __('setting.menu_item'))
-                    ->url(fn(): string => SettingResource::getUrl())
+                    ->url(fn(): string => SettingPage::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
             ->brandName($this->getBrand('app::name'))
