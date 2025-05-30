@@ -19,17 +19,17 @@ class FinesService
         $returnedDate = Carbon::parse($returnDate)->startOfDay();
 
         if ($returnedDate->lessThanOrEqualTo($dueDate)) {
-            return 0; // Tidak telat
+            return 0; // Not late
         }
 
         $daysLate = $dueDate->diffInDays($returnedDate);
 
-        // Ambil setting denda
+        // Take fine setting
         $amount = (int) Setting::get('fines::fine_amount', 1000);
         $interval = Setting::get('fines::fine_interval', 'day'); // day/week/month/year
         $type = Setting::get('fines::fine_type', 'per_item'); // per_item / per_loan
 
-        // Hitung total interval telat
+        // Calculate total late intervals
         $intervalCount = match ($interval) {
             'day' => $dueDate->diffInDays($returnedDate),
             'week' => $dueDate->diffInWeeks($returnedDate),
@@ -39,10 +39,10 @@ class FinesService
         };
 
         if ($intervalCount < 1) {
-            $intervalCount = 1; // minimal 1x denda jika lewat
+            $intervalCount = 1; // minimum 1x fine if you pass
         }
 
-        // Hitung jumlah buku yg dipinjam jika per_item
+        // Calculate the number of books borrowed per item
         $quantity = ($type === 'per_item') ? $loan->loan_books()->count() : 1;
 
         return $intervalCount * $amount * $quantity;

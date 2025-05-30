@@ -127,15 +127,17 @@ class Setting extends Page
 
         ModelsSetting::set('app::name', $data['app_name']);
 
-        // Simpan logo berdasarkan toggle
-        if (!empty($data['use_logo_upload']) && !empty($data['app_logo_upload'])) {
-            ModelsSetting::set('app::logo', $data['app_logo_upload']);
+        if ($data['use_logo_upload']) {
+            if ($data['app_logo_upload']) {
+                // Store the uploaded file and get its path
+                ModelsSetting::set('app::logo', $data['app_logo_upload']);
+            }
         } else {
             ModelsSetting::set('app::logo', $data['app_logo']);
         }
 
         Notification::make()
-            ->title(__('fines::module.notifications.save_success'))
+            ->title(__('setting.notifications.save_success'))
             ->success()
             ->send();
 
