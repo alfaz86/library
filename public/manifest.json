@@ -1,0 +1,23 @@
+{
+    "name": "Library App",
+    "short_name": "LA",
+    "start_url": "/index.php",
+    "background_color": "#086E7D",
+    "description": "A library management application",
+    "display": "fullscreen",
+    "theme_color": "#086E7D",
+    "icons": [
+        {
+            "src": "images/book.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "images/no-internet.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

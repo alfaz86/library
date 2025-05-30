@@ -9,4 +9,6 @@ return [
     Modules\Loan\Providers\LoanServiceProvider::class,
     Modules\LoanReturn\Providers\LoanReturnServiceProvider::class,
     Modules\Fines\Providers\FinesServiceProvider::class,
+    Modules\Report\Providers\ReportServiceProvider::class,
+    Ladumor\LaravelPwa\PWAServiceProvider::class,
 ];

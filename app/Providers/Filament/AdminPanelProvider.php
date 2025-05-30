@@ -95,6 +95,18 @@ class AdminPanelProvider extends PanelProvider
                 function () {
                     return view('core::filament.sidebar.customize');
                 }
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_START,
+                function () {
+                    return view('core::filament.head.customize');
+                }
+            )
+            ->renderHook(
+                PanelsRenderHook::SCRIPTS_BEFORE,
+                function () {
+                    return view('core::filament.scripts');
+                }
             );
     }
 
