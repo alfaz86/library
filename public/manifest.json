@@ -1,6 +1,6 @@
 {
     "name": "Library App",
-    "short_name": "LA",
+    "short_name": "Library App",
     "start_url": "/index.php",
     "background_color": "#FFF",
     "description": "A library management application",

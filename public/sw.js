@@ -12,8 +12,10 @@ self.addEventListener("install", function (event) {
 const filesToCache = [
     '/',
     '/offline',
+    '/internal-server-error',
     '/images/book.png',
     '/images/no-internet.png',
+    '/images/internal-server-error.png',
 ];
 
 const checkResponse = function (request) {
@@ -40,23 +42,21 @@ const addToCache = function (request) {
     });
 };
 
-
-const returnFromCache = function (request) {
-    return caches.open("offline").then(function (cache) {
-        return cache.match(request).then(function (matching) {
-            if (!matching || matching.status === 404) {
-                return cache.match("offline");
-            } else {
-                return matching;
-            }
-        });
-    });
-};
-
 self.addEventListener("fetch", function (event) {
-    event.respondWith(checkResponse(event.request).catch(function () {
-        return returnFromCache(event.request);
-    }));
+    event.respondWith(
+        fetch(event.request)
+            .then(function (response) {
+                return response;
+            })
+            .catch((error) => {
+                if (!navigator.onLine) {
+                    return caches.match('/offline');
+                } else {
+                    return caches.match('/internal-server-error');
+                }
+            })
+    );
+
     if (!event.request.url.startsWith('http')) {
         event.waitUntil(addToCache(event.request));
     }
